@@ -57,15 +57,16 @@
                         <span>As senha devem ser iguais!</span>
                     </small>
                 </div>
+                <!-- EXEMPLO DO NG-OPTIONS -->
                 <!-- <div class="form-group">
                     <label>Tipo E-mail</label>
                     <select class="form-control" ng-model="vm.user.tipoEmail" name="tipo"
-                            ng-options="item.desc group by item.tipo disable when item.disable for item in vm.tiposEmail | orderBy:'desc'">
+                            ng-options="item.id as item.desc group by item.tipo disable when item.disable for item in vm.tiposEmail | orderBy:'desc'">
                         <option value=""> Selecione... </option>
                     </select>
                     <span style="font-size: 2rem;">{{vm.user.tipoEmail | json}}</span>
                 </div> -->
-                <button class="btn btn-primary mb-1" type="submit">
+                <button class="btn btn-primary mb-1" type="submit" ng-click="vm.validar = true;">
                     Cadastrar
                 </button>
             </form>
