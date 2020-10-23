@@ -1,9 +1,9 @@
-describe('ListaComprasService', function () {
+describe('todoService', function () {
 
     // beforeEach(function () {
     //     angular.mock.listaComprasMock();
     // });
-    beforeEach(module('listaComprasApp'));
+    beforeEach(module('todoApp'));
 
     describe('Testando Service', function () {
         var service, $httpBackend;
@@ -11,7 +11,7 @@ describe('ListaComprasService', function () {
         var respSuccess = 'sucesso';
 
         beforeEach(inject(function ($injector) {
-            service = $injector.get('ListaComprasService');
+            service = $injector.get('todoService');
             $httpBackend = $injector.get('$httpBackend');
 
             $httpBackend.whenGET('acesso/login.tpl.html').respond(200, {});

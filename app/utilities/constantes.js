@@ -1,7 +1,7 @@
 (function () {
     "use strict";
 
-    angular.module('listaComprasApp')
+    angular.module('todoApp')
         .constant('constantes', {
             URL_BASE: 'https://gitmaratonadev.stefanini.com.br/apisemanaangular/api',
             // Podemos também colocar objetos dentro de objetos, veja como é usado

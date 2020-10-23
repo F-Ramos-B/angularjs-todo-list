@@ -2,7 +2,7 @@
     "use strict";
 
     // MODULO
-    angular.module('listaComprasApp', ['ngRoute']);
+    angular.module('todoApp', ['ngRoute']);
 
 
 })();

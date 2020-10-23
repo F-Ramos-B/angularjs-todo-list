@@ -3,7 +3,7 @@ describe('helperFactory', function () {
     // beforeEach(function () {
     //     angular.mock.listaComprasMock();
     // });
-    beforeEach(module('listaComprasApp'));
+    beforeEach(module('todoApp'));
 
     describe('Testando Factory', function () {
         var factory, $httpBackend;

@@ -4,7 +4,7 @@ describe('Testando Diretiva Exemplo', function () {
         $httpBackend;
 
     beforeEach(function () {
-        module('listaComprasApp');
+        module('todoApp');
         inject(function ($injector) {
             $compile = $injector.get('$compile');
             $rootScope = $injector.get('$rootScope');

@@ -1,7 +1,7 @@
 (function () {
     "use strict";
 
-    angular.module('listaComprasApp')
+    angular.module('todoApp')
         .config(routes)
         .run(configDefaults);
 
@@ -11,10 +11,10 @@
     function routes($routeProvider) {
         $routeProvider
             .when('/', {
-                redirectTo: '/login'
+                templateUrl: 'home/home.tpl.html'
             })
             .otherwise({
-                redirectTo: '/login'
+                redirectTo: '/'
             });
     }
 

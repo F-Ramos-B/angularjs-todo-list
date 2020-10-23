@@ -1,7 +1,7 @@
 (function () {
     "use strict";
 
-    angular.module('listaComprasApp')
+    angular.module('todoApp')
         .filter('capitalize', function () {
             return function (input) {
                 return (angular.isString(input) && input.length > 0) ?

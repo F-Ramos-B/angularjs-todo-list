@@ -11,14 +11,14 @@ describe('HeaderController', function () {
     //     _$rootScope_,
     //     _$httpBackend_,
     //     _$location_,
-    //     _ListaComprasService_,
+    //     _todoService_,
     //     _helperFactory_,
     // ) {
     //     $controller = _$controller_;
     //     $rootScope = _$rootScope_;
     //     $httpBackend = _$httpBackend_;
     //     $location = _$location_;
-    //     service = _ListaComprasService_;
+    //     service = _todoService_;
     //     helper = _helperFactory_;
 
     // }));
@@ -28,7 +28,7 @@ describe('HeaderController', function () {
         $rootScope = $injector.get('$rootScope');
         $httpBackend = $injector.get('$httpBackend');
         $location = $injector.get('$location');
-        service = $injector.get('ListaComprasService');
+        service = $injector.get('todoService');
         helper = $injector.get('helperFactory');
     }));
 

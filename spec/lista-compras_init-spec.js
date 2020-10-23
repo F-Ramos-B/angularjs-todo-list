@@ -4,9 +4,9 @@
     angular.module('moduloExterno', []); // mock
 
     angular.mock.listaComprasMock = function ($routeProvider) {
-        module('listaComprasApp');
+        module('todoApp');
         module(function ($provide) {
-            $provide.service('ListaComprasService', function () {
+            $provide.service('todoService', function () {
                 return {
                     exemplo: function () { return {}; },
                 };

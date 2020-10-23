@@ -1,7 +1,7 @@
 (function () {
     "use strict";
 
-    angular.module('listaComprasApp')
+    angular.module('todoApp')
         .factory('helperFactory', helperFactory);
 
     helperFactory.$inject = [

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pt-BR" ng-app="listaComprasApp">
+<html lang="pt-BR" ng-app="todoApp">
 
 <head>
     <meta charset="UTF-8">
@@ -7,52 +7,37 @@
     <title>Lista de Compras App</title>
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://bootswatch.com/4/darkly/bootstrap.css">
-    <link rel="stylesheet" href="lista-compras.css">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.24/angular-material.min.css">
+    <link rel="stylesheet" href="todo-app.css">
     <script src="http://localhost:35729/livereload.js"></script>
 
     <script src="vendor/angular/angular.js"></script>
     <script src="vendor/angular-route/angular-route.js"></script>
 
-    <script src="lista-compras.module.js"></script>
-    <script src="lista-compras.routes.js"></script>
-    <script src="lista-compras.service.js"></script>
+    <script src="todo-app.module.js"></script>
+    <script src="routes.js"></script>
+    <script src="todo-app.service.js"></script>
 
     <script src="utilities/constantes.js"></script>
     <script src="utilities/filtros.js"></script>
     <script src="utilities/helper.factory.js"></script>
 
-    <script src="acesso/acesso.controller.js"></script>
+    <script src="home/home.controller.js"></script>
 
 </head>
 
 <body>
 
-    <!-- ### ESPAÇO ALERTAS ### -->
-    <div id="alertas" class="container" ng-show="listaMensagens.length">
-        <div ng-repeat="msg in listaMensagens" class="alert alert-{{msg.tipo}}" role="alert">
-            {{msg.text}} {{msg.acao}}
-            <button type="button" class="close" aria-label="Close"
-                    ng-click="listaMensagens.splice($index, 1)">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    </div>
-
-    {{vm.teste}}
-    <button ng-click="vm.teste = !vm.teste">BTN</button>
-
     <ng-view></ng-view>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-            crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-            integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-            crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
-            crossorigin="anonymous"></script>
+    <!-- Angular Material Dependencies -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular-messages.min.js"></script>
+
+    <!-- Angular Material Javascript now available via Google CDN; version 1.1.24 used here -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.24/angular-material.min.js"></script>
+
 </body>
 
 </html>

@@ -2,7 +2,7 @@ describe('Testando Filtros', function () {
     var $filter;
 
     beforeEach(function () {
-        module('listaComprasApp');
+        module('todoApp');
         inject(function ($injector) {
             $filter = $injector.get('$filter');
         });
