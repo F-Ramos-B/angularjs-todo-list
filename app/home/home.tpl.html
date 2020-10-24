@@ -4,28 +4,21 @@
       <div class="row align-items-center">
         <div class="col-12 col-sm-12 col-md-4">
           <div class="input-group">
+            <div class="input-group-append">
+              <span class="input-group-text" id="basic-addon1">Logado como:</span>
+            </div>
             <select id="usuario" class="custom-select"
               ng-options="user as user.nome for user in vm.users track by user.id"
               ng-model="vm.usuarioSelecionado"></select>
-            <div class="input-group-append">
-              <button class="btn btn-outline-success"
-                ng-disabled="vm.usuarioSelecionado.idRole !== vm.constantes.ROLES.ADMIN.id" type="button"
-                data-toggle="modal" data-target="#novoUserModal">Novo</button>
-            </div>
-            <div class="input-group-append">
-              <button class="btn btn-outline-warning"
-                ng-disabled="vm.usuarioSelecionado.idRole !== vm.constantes.ROLES.ADMIN.id"
-                type="button">Editar</button>
-            </div>
-            <div class="input-group-append">
-              <button class="btn btn-outline-danger"
-                ng-disabled="vm.usuarioSelecionado.idRole !== vm.constantes.ROLES.ADMIN.id"
-                type="button">Excluir</button>
-            </div>
           </div>
         </div>
         <div class="col-12 col-sm-12 col-md-4 text-center">
           <h1>Tarefas</h1>
+        </div>
+        <div class="col-12 col-sm-12 col-md-4">
+          <button type="button" class="btn btn-outline-warning btn-lg btn-block"
+            ng-disabled="vm.usuarioSelecionado.idRole !== vm.constantes.ROLES.ADMIN.id" data-toggle="modal"
+            data-target="#tableModal">Gerenciar usuários</button>
         </div>
       </div>
     </div>
@@ -55,52 +48,6 @@
     </div>
   </div>
 
-  <!-- Modal novo usuário -->
-  <div class="modal fade" id="novoUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <form ng-submit="vm.submit()">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">{{ vm.isEdicao ? 'Editar usuário' : 'Novo usuário' }}</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-
-            <div class="form-group">
-              <label for="nome">Nome</label>
-              <input type="text" class="form-control" id="nome" ng-model="vm.usuario.nome" required placeholder="Digite um nome">
-            </div>
-
-            <div class="form-group">
-              <label for="email">E-mail</label>
-              <input type="email" class="form-control" id="email" ng-model="vm.usuario.email" required placeholder="Digite um e-mail">
-            </div>
-
-            <div class="form-group">
-              <label for="senha">Senha</label>
-              <input type="password" class="form-control" id="senha" ng-model="vm.usuario.senha" required placeholder="Digite uma senha">
-            </div>
-
-            <div class="form-group">
-              <label for="role">Perfil</label>
-              <select id="role" class="custom-select"
-                ng-options="permissao.id as permissao.descricao for permissao in vm.permissoes track by permissao.id" placeholder
-                ng-model="vm.usuario.permissao" required>
-                <option value="">Selecione</option>
-              </select>
-            </div>
-
-          </div>
-          <div class="modal-footer">
-            <button type="submit" class="btn btn-primary">Salvar</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal"
-              ng-click="vm.clearModal()">Cancelar</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
+  <ng-include src="'home/modal-table.tpl.html'"></ng-include>
+  <ng-include src="'home/modal-form.tpl.html'"></ng-include>
 </section>

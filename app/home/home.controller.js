@@ -40,11 +40,15 @@
     }
 
     function submit() {
-      console.log('submited');
+      userService.criarUsuario(vm.usuario, vm.usuarioSelecionado, function (data) {
+        vm.users = [];
+        vm.users = data;
+        vm.clearModal();
+        $('#novoUserModal').modal('hide');
+      });
     }
 
     function clearModal() {
-      console.log('modal cleared');
       vm.usuario = {};
     }
 
