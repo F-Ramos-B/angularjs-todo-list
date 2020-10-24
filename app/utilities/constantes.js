@@ -3,7 +3,17 @@
 
   angular.module('todoApp')
     .constant('constantes', {
-      URL_BASE: 'http://localhost:8080/api/todo'
+      BASE_URL: 'http://localhost:8080/api',
+      ROLES: {
+        ADMIN: {
+          id: 1,
+          role: 'ADMIN'
+        },
+        USER: {
+          id: 2,
+          role: 'USER'
+        }
+      }
     });
 
 })();

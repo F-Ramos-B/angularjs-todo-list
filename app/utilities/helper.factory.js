@@ -49,6 +49,7 @@
         }
 
         function sendError(_error) {
+            console.log(_error);
             return { error: true, msg: _error.data.message };
         }
 

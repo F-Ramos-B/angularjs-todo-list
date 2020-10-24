@@ -4,66 +4,78 @@
   angular.module('todoApp')
     .controller('homeController', homeController);
 
-  homeController.$inject = ['constantes', 'todoService', '$timeout'];
+  homeController.$inject = ['constantes', 'userService'];
 
-  function homeController(constantes, service, $timeout) {
+  function homeController(constantes, userService) {
     var vm = this;
+
     /* ***************    INIT VARIÁVEIS    *********************************** */
-    vm.teste = 'Testando';
+    vm.loading = true;
     vm.cards = [];
-    vm.usuarios = [
-      {
-        id: 1,
-        nome: 'Danilo'
-      },
-      {
-        id: 2,
-        nome: 'Mayra'
-      },
-      {
-        id: 3,
-        nome: 'Roger'
-      }
-    ];
-    vm.usuarioSelecionado = vm.usuarios[0];
-    
+    vm.users = [];
+    vm.permissoes = [];
+    vm.usuario = {};
+    vm.usuarioSelecionado = null;
+    vm.constantes = constantes;
+    vm.isEdicao = false;
+
     /* ***************    INDICE FUNÇÕES    **************** */
     vm.init = init;
     vm.criarCards = criarCards;
     vm.dragEvent = dragEvent;
     vm.drop = drop;
     vm.allowDrop = allowDrop;
-    vm.loading = true;
+    vm.buscarUsuarios = buscarUsuarios;
+    vm.submit = submit;
+    vm.clearModal = clearModal;
+    vm.buscarRoles = buscarRoles;
 
-    /* ***************    FUNÇÕES INTERNAS    ******************************** */
+    /* ***************    FUNÇÕES    ******************************** */
 
     function init() {
+      $('#novoUserModal').on('hidden.bs.modal', vm.clearModal);
+      vm.buscarUsuarios();
       vm.criarCards();
-      $timeout(() => {
-        console.log('timeout');
-        vm.loading = false;
-      }, 2000);
+      vm.buscarRoles();
+    }
+
+    function submit() {
+      console.log('submited');
+    }
+
+    function clearModal() {
+      console.log('modal cleared');
+      vm.usuario = {};
+    }
+
+    function buscarUsuarios() {
+      userService.getUsers(function (data) {
+        vm.users = data;
+        vm.usuarioSelecionado = data[0];
+      });
+    }
+
+    function buscarRoles() {
+      userService.getRoles(function (data) {
+        vm.permissoes = data;
+      });
     }
 
     function criarCards() {
-      vm.cards = [
-        {
+      vm.cards = [{
           idStatus: 1,
           status: 'TODO',
           severity: 'info',
-          registros: [
-            {
-              id: 1,
-              text: 'Prova Quarkus'
-            }
-          ]
+          registros: [{
+            id: 1,
+            text: 'Prova Quarkus'
+          }]
         },
         {
           idStatus: 2,
           status: 'DOING',
           severity: 'warning',
-          registros: [
-            {
+          registros: [{
               id: 2,
               text: 'Estudando'
             },
@@ -77,8 +89,7 @@
           idStatus: 3,
           status: 'DONE',
           severity: 'success',
-          registros: [
-            {
+          registros: [{
               id: 4,
               text: 'Prova AngularJS'
             },
@@ -92,12 +103,10 @@
           idStatus: 4,
           status: 'BLOCK',
           severity: 'danger',
-          registros: [
-            {
-              id: 6,
-              text: 'Fazer fork no projeto final'
-            }
-          ]
+          registros: [{
+            id: 6,
+            text: 'Fazer fork no projeto final'
+          }]
         }
       ];
     }
