@@ -40,6 +40,7 @@
     vm.paginar = paginar;
     vm.paginaAnterior = paginaAnterior;
     vm.proximaPagina = proximaPagina;
+    vm.excluirUsuario = excluirUsuario;
 
     /* ***************    FUNÇÕES    ******************************** */
 
@@ -53,7 +54,7 @@
 
     function consultarPaginado() {
       vm.paginador.loading = true;
-      userService.consultarPaginado(vm.paginador.filtro, function (data) {
+      userService.consultarPaginado(vm.paginador.filtro, function ({ data }) {
         vm.paginador.resultados = data.lista;
         vm.paginador.paginas = data.paginas;
         vm.paginador.total = data.total;
@@ -77,7 +78,7 @@
     }
 
     function submit() {
-      userService.criarUsuario(vm.usuario, vm.usuarioSelecionado, function (data) {
+      userService.criarUsuario(vm.usuario, vm.usuarioSelecionado, function ({ data }) {
         vm.users = [];
         vm.users = data;
         vm.clearModal();
@@ -90,14 +91,20 @@
     }
 
     function buscarUsuarios() {
-      userService.getUsers(function (data) {
+      userService.getUsers(function ({ data }) {
         vm.users = data;
         vm.usuarioSelecionado = data[0];
       });
     }
 
+    function excluirUsuario(id) {
+      userService.excluirUsuario(id, vm.usuarioSelecionado, function () {
+        vm.consultarPaginado();
+      });
+    }
+
     function buscarRoles() {
-      userService.getRoles(function (data) {
+      userService.getRoles(function ({ data }) {
         vm.permissoes = data;
       });
     }
