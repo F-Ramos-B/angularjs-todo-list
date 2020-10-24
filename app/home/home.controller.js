@@ -34,18 +34,19 @@
     vm.allowDrop = allowDrop;
     vm.buscarUsuarios = buscarUsuarios;
     vm.submit = submit;
-    vm.clearModal = clearModal;
+    vm.clearUsuario = clearUsuario;
     vm.buscarRoles = buscarRoles;
     vm.consultarPaginado = consultarPaginado;
     vm.paginar = paginar;
     vm.paginaAnterior = paginaAnterior;
     vm.proximaPagina = proximaPagina;
     vm.excluirUsuario = excluirUsuario;
+    vm.prepararEdicao = prepararEdicao;
 
     /* ***************    FUNÇÕES    ******************************** */
 
     function init() {
-      $('#novoUserModal').on('hidden.bs.modal', vm.clearModal);
+      $('#novoUserModal').on('hidden.bs.modal', vm.clearUsuario);
       vm.buscarUsuarios();
       vm.criarCards();
       vm.buscarRoles();
@@ -54,7 +55,7 @@
 
     function consultarPaginado() {
       vm.paginador.loading = true;
-      userService.consultarPaginado(vm.paginador.filtro, function ({ data }) {
+      userService.consultarPaginado(vm.paginador.filtro, ({ data }) => {
         vm.paginador.resultados = data.lista;
         vm.paginador.paginas = data.paginas;
         vm.paginador.total = data.total;
@@ -78,33 +79,47 @@
     }
 
     function submit() {
-      userService.criarUsuario(vm.usuario, vm.usuarioSelecionado, function ({ data }) {
-        vm.users = [];
-        vm.users = data;
-        vm.clearModal();
+      var fn = vm.isEdicao ? userService.editarUsuario : userService.criarUsuario;
+
+      fn(vm.usuario, vm.usuarioSelecionado, () => {
+        vm.buscarUsuarios();
+
+        vm.isEdicao = false;
+        vm.clearUsuario();
+        vm.consultarPaginado();
         $('#novoUserModal').modal('hide');
+        $('#tableModal').modal('show');
       });
     }
 
-    function clearModal() {
+    function prepararEdicao(usuario) {
+      vm.isEdicao = true;
+      vm.usuario = { ...usuario };
+    }
+
+    function clearUsuario() {
       vm.usuario = {};
     }
 
     function buscarUsuarios() {
-      userService.getUsers(function ({ data }) {
+      userService.getUsers(({ data }) => {
         vm.users = data;
-        vm.usuarioSelecionado = data[0];
+        if (vm.usuarioSelecionado) {
+          vm.usuarioSelecionado = vm.users.find(u => u.id === vm.usuarioSelecionado.id);
+        } else {
+          vm.usuarioSelecionado = data[0];
+        }
       });
     }
 
     function excluirUsuario(id) {
-      userService.excluirUsuario(id, vm.usuarioSelecionado, function () {
+      userService.excluirUsuario(id, vm.usuarioSelecionado, () => {
         vm.consultarPaginado();
       });
     }
 
     function buscarRoles() {
-      userService.getRoles(function ({ data }) {
+      userService.getRoles(({ data }) => {
         vm.permissoes = data;
       });
     }

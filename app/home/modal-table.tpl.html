@@ -14,6 +14,7 @@
               <th scope="col">Nome</th>
               <th scope="col">E-mail</th>
               <th scope="col">Perfil</th>
+              <th scope="col">Data de criação</th>
               <th scope="col">Editar</th>
               <th scope="col">Excluir</th>
             </tr>
@@ -23,15 +24,16 @@
               <td>{{ usuario.nome }}</td>
               <td>{{ usuario.email }}</td>
               <td>{{ usuario.idRole | role }}</td>
+              <td>{{ usuario.dataCriacao }}</td>
               <td>
-                <button type="button" class="btn btn-outline-info btn-block btn-sm">Editar</button>
+                <button type="button" ng-click="vm.prepararEdicao(usuario)" class="btn btn-outline-info btn-block btn-sm" data-dismiss="modal" data-toggle="modal" data-target="#novoUserModal">Editar</button>
               </td>
               <td>
                 <button ng-click="vm.excluirUsuario(usuario.id)" ng-disabled="usuario.id === vm.usuarioSelecionado.id" type="button" class="btn btn-outline-danger btn-block btn-sm">Excluir</button>
               </td>
             </tr>
             <tr ng-show="vm.paginador.loading">
-              <td colspan="5">
+              <td colspan="6">
                 <div class="text-center">
                   <div class="spinner-border spinner-border-sm text-info" role="status"></div>
                 </div>
@@ -44,7 +46,7 @@
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#novoUserModal">Novo usuário</button>
+        <button type="button" class="btn btn-primary" ng-click="vm.isEdicao = false" data-dismiss="modal" data-toggle="modal" data-target="#novoUserModal">Novo usuário</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
       </div>
     </div>
