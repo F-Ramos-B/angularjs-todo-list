@@ -11,7 +11,22 @@
     /* ***************    INIT VARIÁVEIS    *********************************** */
     vm.teste = 'Testando';
     vm.cards = [];
-
+    vm.usuarios = [
+      {
+        id: 1,
+        nome: 'Danilo'
+      },
+      {
+        id: 2,
+        nome: 'Mayra'
+      },
+      {
+        id: 3,
+        nome: 'Roger'
+      }
+    ];
+    vm.usuarioSelecionado = vm.usuarios[0];
+    
     /* ***************    INDICE FUNÇÕES    **************** */
     vm.init = init;
     vm.criarCards = criarCards;

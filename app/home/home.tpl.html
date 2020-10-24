@@ -1,6 +1,21 @@
 <div class="row" ng-controller="homeController as vm" ng-init="vm.init()">
   <div class="col-12 text-center">
-    <h1>Front Todos</h1>
+    <div class="row align-items-center">
+      <div class="col-12 col-md-3">
+        <div class="input-group">
+          <select class="custom-select" ng-options="user as user.nome for user in vm.usuarios track by user.id" ng-model="vm.usuarioSelecionado"></select>
+          <div class="input-group-append">
+            <button class="btn btn-outline-info" type="button"><span class="oi oi-icon-name" title="icon name" aria-hidden="true"></span></button>
+          </div>
+          <div class="input-group-append">
+            <button class="btn btn-outline-info" type="button">Excluir</button>
+          </div>
+      </div>
+      </div>
+      <div class="col-12 col-md-6 text-center">
+        <h1>Front Todos</h1>
+      </div>
+    </div>
   </div>
   <div ng-repeat="card in vm.cards | orderBy: card.idStatus track by card.idStatus" class="col-12 col-md-6 my-5">
     <div class="card border-{{ card.severity }}">
@@ -9,8 +24,8 @@
       </div>
       <div class="card-body p-0 text-{{ card.severity }}" ng-on-drop="vm.drop($event, card.idStatus)"
         ng-on-dragover="vm.allowDrop($event)">
-        <div class="campo border-{{ card.severity }}" ng-on-dragstart="vm.dragEvent($event, card.idStatus, registro)" draggable="true"
-          ng-repeat="registro in card.registros" ng-on-dragover="vm.allowDrop($event)">
+        <div class="campo border-{{ card.severity }}" ng-on-dragstart="vm.dragEvent($event, card.idStatus, registro)"
+          draggable="true" ng-repeat="registro in card.registros" ng-on-dragover="vm.allowDrop($event)">
           <div ng-if="!vm.loading">
             {{ registro.text }}
           </div>
