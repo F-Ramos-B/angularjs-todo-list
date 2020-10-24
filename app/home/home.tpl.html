@@ -17,7 +17,7 @@
         </div>
         <div class="col-12 col-sm-12 col-md-4">
           <button type="button" class="btn btn-outline-warning btn-lg btn-block"
-            ng-disabled="vm.usuarioSelecionado.idRole !== vm.constantes.ROLES.ADMIN.id" data-toggle="modal"
+            ng-disabled="vm.usuarioSelecionado.idRole !== vm.constantes.ID_ROLE_ADMIN" data-toggle="modal"
             data-target="#tableModal">Gerenciar usuários</button>
         </div>
       </div>
@@ -35,9 +35,7 @@
               {{ registro.text }}
             </div>
             <div class="text-center" ng-if="vm.loading">
-              <div class="spinner-border spinner-border-sm text-{{ card.severity }}" role="status">
-                <span class="sr-only">Loading...</span>
-              </div>
+              <div class="spinner-border spinner-border-sm text-{{ card.severity }}" role="status"></div>
             </div>
           </div>
         </div>

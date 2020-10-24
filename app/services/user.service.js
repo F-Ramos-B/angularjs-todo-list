@@ -14,6 +14,7 @@
       getUsers: _getUsers,
       getRoles: _getRoles,
       criarUsuario: _criarUsuario,
+      consultarPaginado: _consultarPaginado
     }
 
     // ======================================
@@ -42,6 +43,16 @@
       $http.defaults.headers.common['Authorization'] = 'Basic ' + btoa(usuarioSelecionado.email + ':' + usuarioSelecionado.senha);
 
       return $http.post(`${vm.BASE_URL}/user`, usuario)
+        .then(function (response) {
+          fn(response.data);
+        })
+        .catch(function (error) {
+          fnError ? fnError(error) : console.log(error);
+        });
+    }
+
+    function _consultarPaginado(filtro, fn, fnError) {
+      return $http.get(`${vm.BASE_URL}/user/paginado`, { params: filtro })
         .then(function (response) {
           fn(response.data);
         })

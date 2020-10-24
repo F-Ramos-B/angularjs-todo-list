@@ -18,6 +18,13 @@
     vm.usuarioSelecionado = null;
     vm.constantes = constantes;
     vm.isEdicao = false;
+    vm.paginador = {
+      filtro: { pageNumber: 0, pageSize: 10 },
+      total: 1,
+      paginas: 1,
+      resultados: [],
+      loading: false
+    }
 
     /* ***************    INDICE FUNÇÕES    **************** */
     vm.init = init;
@@ -29,6 +36,10 @@
     vm.submit = submit;
     vm.clearModal = clearModal;
     vm.buscarRoles = buscarRoles;
+    vm.consultarPaginado = consultarPaginado;
+    vm.paginar = paginar;
+    vm.paginaAnterior = paginaAnterior;
+    vm.proximaPagina = proximaPagina;
 
     /* ***************    FUNÇÕES    ******************************** */
 
@@ -37,6 +48,32 @@
       vm.buscarUsuarios();
       vm.criarCards();
       vm.buscarRoles();
+      vm.consultarPaginado();
+    }
+
+    function consultarPaginado() {
+      vm.paginador.loading = true;
+      userService.consultarPaginado(vm.paginador.filtro, function (data) {
+        vm.paginador.resultados = data.lista;
+        vm.paginador.paginas = data.paginas;
+        vm.paginador.total = data.total;
+        vm.paginador.loading = false;
+      });
+    }
+
+    function paginar(index) {
+      vm.paginador.filtro.pageNumber = index;
+      vm.consultarPaginado();
+    }
+
+    function paginaAnterior() {
+      vm.paginador.filtro.pageNumber--;
+      vm.consultarPaginado();
+    }
+
+    function proximaPagina() {
+      vm.paginador.filtro.pageNumber++;
+      vm.consultarPaginado();
     }
 
     function submit() {
