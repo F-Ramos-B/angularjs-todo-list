@@ -183,6 +183,8 @@
     function submitUser() {
       var fn = vm.isEdicao ? userService.editarUsuario : userService.criarUsuario;
 
+      vm.usuario.permissao = constantes.ENUM_ROLES.get(vm.usuario.idRole).role;
+
       fn(vm.usuario, vm.usuarioSelecionado, () => {
         vm.buscarUsuarios();
 
