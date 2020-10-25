@@ -48,7 +48,7 @@
                 <div class="col-5">
                   <div class="btn-group" role="group">
                     <button type="button" class="btn btn-outline-warning btn-sm" data-toggle="modal" data-target="#historicoModal" ng-click="vm.consultarHistorico(registro)">Histórico</button>
-                    <button type="button" class="btn btn-outline-danger btn-sm" ng-click="vm.excluirTodo(registro.id)">Excluir</button>
+                    <button type="button" ng-disabled="vm.usuarioSelecionado.idRole !== vm.constantes.ID_ROLE_ADMIN" class="btn btn-outline-danger btn-sm" ng-click="vm.excluirTodo(registro.id)">Excluir</button>
                   </div>
                 </div>
               </div>
