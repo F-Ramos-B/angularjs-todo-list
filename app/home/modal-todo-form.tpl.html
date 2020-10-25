@@ -1,0 +1,29 @@
+<!-- Modal novo usuário -->
+<div class="modal fade" id="todoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <form ng-submit="vm.submitTodo()">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">{{ vm.isEdicaoTodo ? 'Editar tarefa' : 'Nova tarefa' }}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label for="nome-todo">Texto da tarefa:</label>
+            <textarea class="form-control" id="nome-todo" minlength="3" maxlength="250" rows="5" ng-model="vm.todo.nome" required placeholder="Digite o texto da a tarefa"></textarea>
+            <small>{{ 250 - vm.todo.nome.length }} caracteres restantes.</small>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Salvar</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="vm.clearTodo()">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

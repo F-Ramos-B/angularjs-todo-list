@@ -4,13 +4,13 @@
   angular.module('todoApp')
     .controller('homeController', homeController);
 
-  homeController.$inject = ['constantes', 'userService'];
+  homeController.$inject = ['constantes', 'userService', 'todoService', 'helperFactory'];
 
-  function homeController(constantes, userService) {
+  function homeController(constantes, userService, todoService, helperFactory) {
     var vm = this;
 
     /* ***************    INIT VARIÁVEIS    *********************************** */
-    vm.loading = true;
+    vm.loadingCards = false;
     vm.cards = [];
     vm.users = [];
     vm.permissoes = [];
@@ -18,7 +18,20 @@
     vm.usuarioSelecionado = null;
     vm.constantes = constantes;
     vm.isEdicao = false;
+    vm.isEdicaoTodo = false;
+    vm.totalTarefas = 0;
+    vm.todoSelecionado = null;
+    vm.todo = {
+      nome: ''
+    }
     vm.paginador = {
+      filtro: { pageNumber: 0, pageSize: 10 },
+      total: 1,
+      paginas: 1,
+      resultados: [],
+      loading: false
+    }
+    vm.paginadorHistorico = {
       filtro: { pageNumber: 0, pageSize: 10 },
       total: 1,
       paginas: 1,
@@ -28,12 +41,11 @@
 
     /* ***************    INDICE FUNÇÕES    **************** */
     vm.init = init;
-    vm.criarCards = criarCards;
     vm.dragEvent = dragEvent;
     vm.drop = drop;
     vm.allowDrop = allowDrop;
     vm.buscarUsuarios = buscarUsuarios;
-    vm.submit = submit;
+    vm.submitUser = submitUser;
     vm.clearUsuario = clearUsuario;
     vm.buscarRoles = buscarRoles;
     vm.consultarPaginado = consultarPaginado;
@@ -42,25 +54,115 @@
     vm.proximaPagina = proximaPagina;
     vm.excluirUsuario = excluirUsuario;
     vm.prepararEdicao = prepararEdicao;
+    vm.abrirTableModal = abrirTableModal;
+    vm.buscarTarefas = buscarTarefas;
+    vm.clearTodo = clearTodo;
+    vm.submitTodo = submitTodo;
+    vm.alterarStatusTodo = alterarStatusTodo;
+    vm.consultarHistorico = consultarHistorico;
+    vm.consultarHistoricoPaginado = consultarHistoricoPaginado;
+    vm.paginarHistorico = paginarHistorico;
+    vm.paginaAnteriorHistorico = paginaAnteriorHistorico;
+    vm.proximaPaginaHistorico = proximaPaginaHistorico;
+    vm.prepararEdicaoTodo = prepararEdicaoTodo;
+    vm.excluirTodo = excluirTodo;
 
     /* ***************    FUNÇÕES    ******************************** */
 
     function init() {
       $('#novoUserModal').on('hidden.bs.modal', vm.clearUsuario);
+      $('#todoModal').on('hidden.bs.modal', vm.clearTodo);
+      vm.cards = helperFactory.criarCards();
       vm.buscarUsuarios();
-      vm.criarCards();
+      vm.buscarTarefas();
       vm.buscarRoles();
-      vm.consultarPaginado();
     }
 
     function consultarPaginado() {
       vm.paginador.loading = true;
-      userService.consultarPaginado(vm.paginador.filtro, ({ data }) => {
+      userService.consultarPaginado(vm.usuarioSelecionado, vm.paginador.filtro, ({ data }) => {
         vm.paginador.resultados = data.lista;
         vm.paginador.paginas = data.paginas;
         vm.paginador.total = data.total;
         vm.paginador.loading = false;
       });
+    }
+
+    function consultarHistorico(todo) {
+      vm.todoSelecionado = todo;
+      $('#historicoModal').modal('show');
+      vm.consultarHistoricoPaginado();
+    }
+
+    function consultarHistoricoPaginado() {
+      vm.paginadorHistorico.loading = true;
+      todoService.getHistoricoTodo({ id: vm.todoSelecionado.id, ...vm.paginadorHistorico.filtro }, ({ data }) => {
+        vm.paginadorHistorico.resultados = data.lista;
+        vm.paginadorHistorico.paginas = data.paginas;
+        vm.paginadorHistorico.total = data.total;
+        vm.paginadorHistorico.loading = false;
+      });
+    }
+
+    function paginarHistorico(index) {
+      vm.paginadorHistorico.filtro.pageNumber = index;
+      vm.consultarHistoricoPaginado();
+    }
+
+    function paginaAnteriorHistorico() {
+      vm.paginadorHistorico.filtro.pageNumber--;
+      vm.consultarHistoricoPaginado();
+    }
+
+    function proximaPaginaHistorico() {
+      vm.paginadorHistorico.filtro.pageNumber++;
+      vm.consultarHistoricoPaginado();
+    }
+
+    function alterarStatusTodo(idNovoStatus, idTodo) {
+      todoService.editarStatusTodo(idTodo, idNovoStatus, vm.usuarioSelecionado, () => vm.buscarTarefas());
+    }
+
+    function prepararEdicaoTodo(todo) {
+      vm.isEdicaoTodo = true;
+      vm.todo = { ...todo };
+      $('#todoModal').modal('show');
+    }
+
+    function excluirTodo(id) {
+      todoService.excluirTodo(id, vm.usuarioSelecionado, () => vm.buscarTarefas());
+    }
+
+    function buscarTarefas() {
+      vm.loadingCards = true;
+      todoService.getTodosAgrupados(({ data }) => {
+        vm.cards.forEach(card => card.registros = []);
+        vm.totalTarefas = data.total;
+        Object.entries(data.tarefas).forEach(entry => 
+          vm.cards.find(card => card.idStatus === +entry[0]).registros = [...entry[1]]
+        );
+        vm.loadingCards = false;
+      });
+    }
+
+    function submitTodo() {
+      var fn = vm.isEdicaoTodo ? todoService.editarTodo : todoService.criarTodo;
+
+      fn(vm.todo, vm.usuarioSelecionado, () => {
+        vm.buscarTarefas();
+
+        vm.isEdicaoTodo = false;
+        vm.clearTodo();
+        $('#todoModal').modal('hide');
+      });
+    }
+
+    function clearTodo() {
+      vm.todo = {};
+    }
+
+    function abrirTableModal() {
+      vm.consultarPaginado();
     }
 
     function paginar(index) {
@@ -78,7 +180,7 @@
       vm.consultarPaginado();
     }
 
-    function submit() {
+    function submitUser() {
       var fn = vm.isEdicao ? userService.editarUsuario : userService.criarUsuario;
 
       fn(vm.usuario, vm.usuarioSelecionado, () => {
@@ -113,9 +215,7 @@
     }
 
     function excluirUsuario(id) {
-      userService.excluirUsuario(id, vm.usuarioSelecionado, () => {
-        vm.consultarPaginado();
-      });
+      userService.excluirUsuario(id, vm.usuarioSelecionado, () => vm.consultarPaginado());
     }
 
     function buscarRoles() {
@@ -124,66 +224,15 @@
       });
     }
 
-    function criarCards() {
-      vm.cards = [{
-          idStatus: 1,
-          status: 'TODO',
-          severity: 'info',
-          registros: [{
-            id: 1,
-            text: 'Prova Quarkus'
-          }]
-        },
-        {
-          idStatus: 2,
-          status: 'DOING',
-          severity: 'warning',
-          registros: [{
-              id: 2,
-              text: 'Estudando'
-            },
-            {
-              id: 3,
-              text: 'Fazendo front-end'
-            },
-          ]
-        },
-        {
-          idStatus: 3,
-          status: 'DONE',
-          severity: 'success',
-          registros: [{
-              id: 4,
-              text: 'Prova AngularJS'
-            },
-            {
-              id: 5,
-              text: 'Prova Java'
-            },
-          ]
-        },
-        {
-          idStatus: 4,
-          status: 'BLOCK',
-          severity: 'danger',
-          registros: [{
-            id: 6,
-            text: 'Fazer fork no projeto final'
-          }]
-        }
-      ];
-    }
-
-    function dragEvent(event, sourceCard, value) {
-      console.log('source:', sourceCard);
-      console.log('valor source:', value);
-      event.dataTransfer.setData('dragged', JSON.stringify(value));
+    function dragEvent(event, value) {
+      event.dataTransfer.setData('tarefaDrag', JSON.stringify(value));
     }
 
     function drop(event, targetCard) {
-      console.log('target:', targetCard);
-      var data = JSON.parse(event.dataTransfer.getData('dragged'));
-      console.log('valor target:', data);
+      var data = JSON.parse(event.dataTransfer.getData('tarefaDrag'));
+      if (targetCard !== data.idStatus) {
+        vm.alterarStatusTodo(targetCard, data.id);
+      }
     }
 
     function allowDrop(event) {

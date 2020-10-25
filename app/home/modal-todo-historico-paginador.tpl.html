@@ -1,0 +1,25 @@
+<nav aria-label="Page navigation example">
+  <ul class="pagination pagination-sm justify-content-center">
+    <li class="page-item" ng-class="{disabled: vm.paginadorHistorico.filtro.pageNumber === 0}">
+      <a title="Início" class="page-link border c-pointer" ng-click="vm.paginarHistorico(0)">
+        <span aria-hidden="true">&laquo;</span>
+        <span class="sr-only">Início</span>
+      </a>
+    </li>
+    <li class="page-item" ng-class="{disabled: vm.paginadorHistorico.filtro.pageNumber === 0}">
+      <a title="Anterior" class="page-link border c-pointer" ng-click="vm.paginaAnteriorHistorico()">&lsaquo;</a>
+    </li>
+    <li ng-repeat="pagina in [].constructor(vm.paginadorHistorico.paginas) track by $index" class="page-item" ng-class="{active: vm.paginadorHistorico.filtro.pageNumber === $index}">
+      <a title="Navegar para página {{ $index + 1 }}" class="page-link border c-pointer" ng-click="vm.paginarHistorico($index)">{{ $index + 1 }}</a>
+    </li>
+    <li class="page-item" ng-class="{disabled: vm.paginadorHistorico.filtro.pageNumber === (vm.paginadorHistorico.paginas - 1)}">
+      <a title="Próxima" class="page-link border c-pointer" ng-click="vm.proximaPaginaHistorico()">&rsaquo;</a>
+    </li>
+    <li class="page-item" ng-class="{disabled: vm.paginadorHistorico.filtro.pageNumber === (vm.paginadorHistorico.paginas - 1)}">
+      <a title="Final" class="page-link border c-pointer" ng-click="vm.paginarHistorico(vm.paginadorHistorico.paginas - 1)">
+        <span aria-hidden="true">&raquo;</span>
+        <span class="sr-only">Final</span>
+      </a>
+    </li>
+  </ul>
+</nav>

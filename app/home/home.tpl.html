@@ -4,7 +4,7 @@
       <div class="row align-items-center">
         <div class="col-12 col-sm-12 col-md-4">
           <div class="input-group">
-            <div class="input-group-append">
+            <div class="input-group-prepend">
               <span class="input-group-text" id="basic-addon1">Logado como:</span>
             </div>
             <select id="usuario" class="custom-select"
@@ -13,28 +13,47 @@
           </div>
         </div>
         <div class="col-12 col-sm-12 col-md-4 text-center">
-          <h1>Tarefas</h1>
+          <h1>Tarefas ({{ vm.totalTarefas }})</h1>
         </div>
         <div class="col-12 col-sm-12 col-md-4">
-          <button type="button" class="btn btn-outline-warning btn-lg btn-block"
-            ng-disabled="vm.usuarioSelecionado.idRole !== vm.constantes.ID_ROLE_ADMIN" data-toggle="modal"
-            data-target="#tableModal">Gerenciar usuários</button>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#todoModal">+ Nova
+                tarefa</button>
+            </div>
+            <div class="input-group-append">
+              <button type="button" class="btn btn-outline-warning"
+                ng-disabled="vm.usuarioSelecionado.idRole !== vm.constantes.ID_ROLE_ADMIN" data-toggle="modal"
+                data-target="#tableModal" ng-click="vm.abrirTableModal()">Gerenciar usuários</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <div ng-repeat="card in vm.cards | orderBy: card.idStatus track by card.idStatus" class="col-12 col-md-6 my-5">
+
+    <div ng-repeat="card in vm.cards | orderBy: card.idStatus track by card.idStatus" class="col-12 col-md-6 my-5"
+      ng-on-drop="vm.drop($event, card.idStatus)" ng-on-dragover="vm.allowDrop($event)">
       <div class="card border-{{ card.severity }}">
         <div class="card-header text-center text-{{ card.severity }}">
           <h2>{{ card.status }}</h2>
         </div>
-        <div class="card-body p-0 text-{{ card.severity }}" ng-on-drop="vm.drop($event, card.idStatus)"
-          ng-on-dragover="vm.allowDrop($event)">
-          <div class="campo border-{{ card.severity }}" ng-on-dragstart="vm.dragEvent($event, card.idStatus, registro)"
-            draggable="true" ng-repeat="registro in card.registros" ng-on-dragover="vm.allowDrop($event)">
-            <div ng-if="!vm.loading">
-              {{ registro.text }}
+        <div class="card-body p-0 text-{{ card.severity }}">
+          <div class="campo border-{{ card.severity }}" ng-on-dragstart="vm.dragEvent($event, registro)"
+            draggable="{{ card.idStatus !== vm.constantes.ID_DONE_TODO }}" ng-repeat="registro in card.registros">
+            <div ng-if="!vm.loadingCards">
+              <div class="row">
+                <div class="col-7 text-truncate c-pointer" ng-click="vm.prepararEdicaoTodo(registro)">
+                  <span>{{ registro.nome }}</span>
+                </div>
+                <div class="col-5">
+                  <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-outline-warning btn-sm" data-toggle="modal" data-target="#historicoModal" ng-click="vm.consultarHistorico(registro)">Histórico</button>
+                    <button type="button" class="btn btn-outline-danger btn-sm" ng-click="vm.excluirTodo(registro.id)">Excluir</button>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="text-center" ng-if="vm.loading">
+            <div class="text-center" ng-if="vm.loadingCards">
               <div class="spinner-border spinner-border-sm text-{{ card.severity }}" role="status"></div>
             </div>
           </div>
@@ -47,5 +66,7 @@
   </div>
 
   <ng-include src="'home/modal-table.tpl.html'"></ng-include>
-  <ng-include src="'home/modal-form.tpl.html'"></ng-include>
+  <ng-include src="'home/modal-user-form.tpl.html'"></ng-include>
+  <ng-include src="'home/modal-todo-form.tpl.html'"></ng-include>
+  <ng-include src="'home/modal-todo-historico.tpl.html'"></ng-include>
 </section>
