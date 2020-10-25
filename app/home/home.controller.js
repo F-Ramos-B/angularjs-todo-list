@@ -158,6 +158,7 @@
     }
 
     function clearTodo() {
+      vm.isEdicaoTodo = false;
       vm.todo = {};
     }
 
@@ -202,6 +203,7 @@
     }
 
     function clearUsuario() {
+      vm.isEdicaoTodo = false;
       vm.usuario = {};
     }
 
